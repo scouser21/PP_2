@@ -11,7 +11,7 @@ import java.util.List;
 @Controller
 public class HelloController {
 
-	@GetMapping(value = "/")
+	/*@GetMapping(value = "/index")
 	public String printWelcome(ModelMap model) {
 		List<String> messages = new ArrayList<>();
 		messages.add("Hello!");
@@ -19,6 +19,6 @@ public class HelloController {
 		messages.add("5.2.0 version by sep'19 ");
 		model.addAttribute("messages", messages);
 		return "index";
-	}
+	}*/
 	
 }
