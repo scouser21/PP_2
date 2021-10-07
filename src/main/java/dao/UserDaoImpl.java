@@ -4,95 +4,63 @@ import model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import service.UserService;
-import util.Util;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
+import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.transaction.Transactional;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+//    @Autowired
+    //private SessionFactory sessionFactory;
+//    private EntityManager entityManager;
+
+//    @Autowired
+//    private EntityManagerFactory factory;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     public UserDaoImpl() {
 
     }
 
-    /*@Override
-    public void createUsersTable() {
-        Session session = Util.getSession();
-        try {
-            session.beginTransaction();
-            String sql = "CREATE TABLE IF NOT EXISTS users " +
-                    "(id LONG NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
-                    "name VARCHAR(255) NOT NULL, lastName VARCHAR(255) NOT NULL, " +
-                    "age TINYINT NOT NULL)";
-            Query query = session.createSQLQuery(sql).addEntity(User.class);
-
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            Util.closeFactory(session);
-        }
-
-    }*/
-
-    @Override
-    public void dropUsersTable() {
-        Session session = Util.getSession();
-        try {
-            session.beginTransaction();
-
-            String tableName = "users";
-            String sql = "DELETE FROM " + tableName;
-            Query query = session.createSQLQuery(sql);
-            query.executeUpdate();
-
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            Util.closeFactory(session);
-        }
-    }
-
     @Override
     public void saveUser(User user) {
-        sessionFactory.getCurrentSession().saveOrUpdate(user);
+        //EntityManager entityManager = factory.createEntityManager();
+//        entityManager.getTransaction().begin();
+        //entityManager.persist(user);
+        entityManager.merge(user);
+
+//        entityManager.getTransaction().commit();
+//        entityManager.close();
     }
 
     @Override
     public void removeUserById(int id) {
         User user = getUser(id);
-        sessionFactory.getCurrentSession().delete(user);
+       // sessionFactory.getCurrentSession().delete(user);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return sessionFactory.getCurrentSession().createQuery("from User", User.class).getResultList();
-    }
-
-    @Override
-    public void cleanUsersTable() {
-        Session session = Util.getSession();
-        try {
-            session.beginTransaction();
-            session.createQuery("delete User").executeUpdate();
-            session.getTransaction().commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            Util.closeFactory(session);
-        }
+        //return sessionFactory.getCurrentSession().createQuery("from User", User.class).getResultList();
+        return new ArrayList<>();
     }
 
     @Override
     public User getUser(int id) {
-        return sessionFactory.getCurrentSession().get(User.class, id);
+//        return sessionFactory.getCurrentSession().get(User.class, id);
+        //EntityManager entityManager = factory.createEntityManager();
+//        entityManager.detach(user);
+        User user = entityManager.find(User.class, id);
+        entityManager.detach(user);
+
+
+        return new User();
     }
 }

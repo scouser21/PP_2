@@ -1,5 +1,7 @@
-package web.config;
+package config;
 
+import dao.UserDao;
+import dao.UserDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,8 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import service.UserService;
+import service.UserServiceImpl;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -29,7 +33,7 @@ public class PersistenceJPAConfig{
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(getDataSource());
+        em.setDataSource(dataSource());
         em.setPackagesToScan(new String[] { "java" });
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -40,7 +44,18 @@ public class PersistenceJPAConfig{
     }
 
     @Bean
-    public DataSource getDataSource() {
+    public UserDao getUserDao() {
+        return new UserDaoImpl();
+    }
+
+    @Bean
+    public UserService getUserService() {
+        return new UserServiceImpl();
+    }
+
+
+    @Bean
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("db.driver"));
         dataSource.setUrl(env.getProperty("db.url"));
@@ -64,7 +79,7 @@ public class PersistenceJPAConfig{
 
     Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 
         return properties;

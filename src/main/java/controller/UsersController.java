@@ -1,13 +1,11 @@
-package web.controller;
+package controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import model.User;
-import dao.UserDao;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import service.UserService;
 
@@ -17,27 +15,10 @@ import java.util.List;
 public class UsersController {
 
     @Autowired
-    private UserService userService; // = new UserDaoImpl();
+    private UserService userService;
 
     public UsersController (){
     }
-
-
-    /*@GetMapping(value = "/print")
-    public String printWelcome(@RequestParam(value = "count", required = false) String param, ModelMap model) {
-
-        MyService service = new MyService();
-        int count;
-        if (param == null){
-            count = Integer.MAX_VALUE;
-        } else {
-            count = Integer.parseInt(param);
-        }
-
-        List<User> carsList = service.getCars(count);
-        model.addAttribute("carsList", carsList);
-        return "cars";
-    }*/
 
     @GetMapping (value = "/users")
     public String getAllUsers(Model model) {
