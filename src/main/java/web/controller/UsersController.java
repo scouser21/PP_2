@@ -22,23 +22,6 @@ public class UsersController {
     public UsersController (){
     }
 
-
-    /*@GetMapping(value = "/print")
-    public String printWelcome(@RequestParam(value = "count", required = false) String param, ModelMap model) {
-
-        MyService service = new MyService();
-        int count;
-        if (param == null){
-            count = Integer.MAX_VALUE;
-        } else {
-            count = Integer.parseInt(param);
-        }
-
-        List<User> carsList = service.getCars(count);
-        model.addAttribute("carsList", carsList);
-        return "cars";
-    }*/
-
     @GetMapping (value = "/users")
     public String getAllUsers(Model model) {
 
@@ -49,8 +32,6 @@ public class UsersController {
 
     @GetMapping (value = "/")
     public String getStartView() {
-
-
         return "startView";
 
     }
