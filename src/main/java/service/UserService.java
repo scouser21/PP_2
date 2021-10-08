@@ -13,4 +13,6 @@ public interface UserService {
     void removeUserById(int id);
 
     User getUser(int id);
+
+    User getUserByLogin(String login);
 }

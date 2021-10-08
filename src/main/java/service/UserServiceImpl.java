@@ -40,4 +40,10 @@ public class UserServiceImpl implements UserService{
     public User getUser(int id) {
         return userDao.getUser(id);
     }
+
+    @Override
+    @Transactional
+    public User getUserByLogin(String login) {
+        return userDao.getUserByLogin(login);
+    }
 }

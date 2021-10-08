@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 import service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,9 +20,26 @@ public class UsersController {
     public UsersController (){
     }
 
-    @GetMapping (value = "/users")
-    public String getAllUsers(Model model) {
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public String getUserInfo(@RequestParam("userName") String userName , ModelMap model) {
+        User user = userService.getUserByLogin(userName);
+//        User user = userService.getUser(1);
+        model.addAttribute("user", user);
+        return "userInfo";
+    }
 
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public String loginPage() {
+        return "login";
+    }
+
+    @RequestMapping(value = "logOut", method = RequestMethod.GET)
+    public String logOut() {
+        return "redirect:/login";
+    }
+
+    @GetMapping (value = "/admin")
+    public String getAllUsers(Model model) {
         List<User> listUser = userService.getAllUsers();
         model.addAttribute("usersList", listUser);
         return "allUsers";
@@ -46,13 +63,13 @@ public class UsersController {
     @GetMapping (value = "saveUser")
     public String saveUser(@ModelAttribute("user") User user){
         userService.saveUser(user);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
     @GetMapping (value = "deleteUser")
     public String deleteUser(@RequestParam("id") int id){
         userService.removeUserById(id);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
 

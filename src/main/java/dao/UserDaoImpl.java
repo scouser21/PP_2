@@ -41,4 +41,18 @@ public class UserDaoImpl implements UserDao {
     public User getUser(int id) {
         return entityManager.find(User.class, id);
     }
+
+    @Override
+    public User getUserByLogin(String login) {
+        List<User> list = getAllUsers();
+        int id = 0;
+        for (User user : list){
+            if (user.getUsername().equals(login)){
+                id = user.getId();
+                break;
+            }
+        }
+        return entityManager.find(User.class, id);
+    }
+
 }

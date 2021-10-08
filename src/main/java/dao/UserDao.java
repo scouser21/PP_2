@@ -13,4 +13,6 @@ public interface UserDao {
     List<User> getAllUsers();
 
     User getUser(int id);
+
+    User getUserByLogin(String login);
 }
