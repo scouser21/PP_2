@@ -7,8 +7,6 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     // Метод, указывающий на класс конфигурации
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        /*AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(AppConfig.class);*/
         return null;
     }
 

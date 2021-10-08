@@ -5,13 +5,15 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    EntityManager entityManager;
 
     public UserDaoImpl() {
 
@@ -19,24 +21,24 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void saveUser(User user) {
-        sessionFactory.getCurrentSession().saveOrUpdate(user);
+        entityManager.merge(user);
     }
 
     @Override
     public void removeUserById(int id) {
         User user = getUser(id);
-        sessionFactory.getCurrentSession().delete(user);
+        entityManager.remove(user);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return sessionFactory.getCurrentSession().createQuery("from User", User.class).getResultList();
+        List<User> list = entityManager.createQuery("from User", User.class).getResultList();
+        return list;
+
     }
-
-
 
     @Override
     public User getUser(int id) {
-        return sessionFactory.getCurrentSession().get(User.class, id);
+        return entityManager.find(User.class, id);
     }
 }
