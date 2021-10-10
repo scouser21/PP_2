@@ -5,27 +5,42 @@
     <title>Title</title>
 </head>
 <body>
-    <h2>Write params of user!</h2>
-    <h4><br></h4>
-    <form th:action="@{saveUser}" th:object="${user}">
-        <div>
+<h2>Write params of user!</h2>
+<br>
 
-            <input type="hidden" th:field="*{id}">
+<form th:attr="action=@{/admin/saveUser}" th:object="${userParams}">
+    <div>
+        <input type="hidden" th:field="*{id}">
+        <label>UserName </label>
+        <input type="text" th:field="*{userName}">
+        <br>
+        <label>Password </label>
+        <input type="text" th:field="*{password}">
+        <br>
+        <label>Name </label>
+        <input type="text" th:field="*{name}" />
+        <br>
+        <label>Surname </label>
+        <input type="text" th:field="*{surname}" />
+        <br>
+        <label>Age </label>
+        <input type="text" th:field="*{age}" />
+        <br>
+        <p> User
+            <input type="checkbox" checked="true" th:value="ROLE_USER" th:name="rolesSet">
+        </p>
+        <p> Admin
+            <input type="checkbox" th:value="ROLE_ADMIN" th:name="rolesSet">
+        </p>
+    </div>
 
-            <label>Name </label>
-            <input type="text" th:field="*{name}" />
-            <br>
-            <label>Surname </label>
-            <input type="text" th:field="*{surname}" />
-            <br>
-            <label>Age </label>
-            <input type="text" th:field="*{age}" />
-            <br>
-        </div>
+    <a th:href="@{/admin/saveUser(user=${userParams})}">
+        <button>Save!</button>
+    </a>
 
-        <input type="submit" value="Add user!"/>
+</form>
 
-    </form>
+
 
 </body>
 </html>

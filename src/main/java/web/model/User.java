@@ -1,4 +1,4 @@
-package model;
+package web.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +17,14 @@ public class User implements UserDetails {
     @Column (name = "id")
     private int id;
 
-    @Column (name = "age")
-    private int age;
+    @Column (unique = true, name = "username")
+    private String userName;
+
+    @Column (name = "password")
+    private String password;
+
+    @Column (name = "enabled")
+    private int enabled;
 
     @Column (name = "name")
     private String name;
@@ -26,20 +32,14 @@ public class User implements UserDetails {
     @Column (name = "surname")
     private String surname;
 
-    private String password;
+    @Column (name = "age")
+    private int age;
 
-    @ElementCollection
+    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     private Set<Role> roles;
 
     public User(){
 
-    };
-
-    public User(int age, String name, String surname, Set<Role> roles) {
-        this.age = age;
-        this.name = name;
-        this.surname = surname;
-        this.roles = roles;
     }
 
     public int getId() {
@@ -50,12 +50,29 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public int getAge() {
-        return age;
+    public User(String userName, String password, int enabled, String name, String surname, int age) {
+        this.userName = userName;
+        this.password = password;
+        this.enabled = enabled;
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 
     public String getName() {
@@ -74,13 +91,25 @@ public class User implements UserDetails {
         this.surname = surname;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", age=" + age +
+                "userName='" + userName + '\'' +
+                ", id=" + id +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", roles=" + roles +
                 '}';
     }
 

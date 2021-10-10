@@ -9,7 +9,9 @@
 <h4><br></h4>
     <div>
         <form th:object="${user}">
-            <label>id: <span th:text="${user.id}"></span> </label>
+            <label>ID: <span th:text="${user.id}"></span> </label>
+            <br>
+            <label>UserName: <span th:text="${user.userName}"></span> </label>
             <br>
             <label>Name: <span th:text="${user.name}"></span> </label>
             <br>
@@ -22,9 +24,10 @@
 
     <br>
     <br>
-    <form th:action="@{logOut}">
+    <!--<form th:action="@{logOut}">
         <input type="submit" value="Log out!"/>
-    </form>
+    </form>-->
+    <input onclick="window.location.href = '/logout'" type="button" value="Logout">
 
 </body>
 </html>

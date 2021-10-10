@@ -12,32 +12,30 @@
     <table border="1">
         <tr>
             <th>count</th>
-            <th>id</th>
+            <th>ID</th>
+            <th>userName</th>
             <th>name</th>
             <th>surname</th>
+            <th>enabled</th>
             <th>age</th>
+            <th>roles</th>
             <th>Manage</th>
         </tr>
         <tr th:each="user, state : ${usersList}">
 
             <td th:utext="${state.count}">count</td>
-            <td th:utext="${user.getId()}">id</td>
+            <td th:utext="${user.getId()}">ID</td>
+            <td th:utext="${user.getUserName()}">userName</td>
             <td th:utext="${user.getName()}">name</td>
             <td th:utext="${user.getSurname()}">surname</td>
+            <td th:utext="${user.getEnabled()}">enabled</td>
             <td th:utext="${user.getAge()}">age</td>
-            <!--<td>
-                <form th:method="POST" th:action="@{deleteUser}" th:object="${user}">
-                    <input type="submit" value="Delete!"/>
-                </form>
-                <form th:method="POST" th:action="@{updateUser}" th:object="${user.getId()}">
-                    <input type="submit" value="Update!"/>
-                </form>
-            </td>-->
+            <td th:utext="${user.getRoles()}">age</td>
             <td>
-                <a th:href="@{/deleteUser(id=${user.getId()})}">
+                <a th:href="@{/admin/deleteUser(id=${user.getId()})}">
                     <button>Delete</button>
                 </a>
-                <a th:href="@{/updateUser(id=${user.getId()})}">
+                <a th:href="@{/admin/updateUser(id=${user.getId()})}">
                     <button>Update</button>
                 </a>
             </td>
@@ -47,9 +45,17 @@
     <br>
 </div>
 
-<form action="userAddingData.html" th:attr="action=@{addNewUser}">
+<form th:attr="action=@{/admin/addNewUser}">
         <input type="submit" value="Add user!"/>
 </form>
+<br>
+<a th:href="@{/user}">
+    <button>Go to my page!</button>
+</a>
+<br>
+<br>
+<br>
+<input onclick="window.location.href = '/logout'" type="button" value="Logout">
 
 </body>
 </html>

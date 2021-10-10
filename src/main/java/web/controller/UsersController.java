@@ -1,30 +1,33 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import service.UserService;
+import web.model.Role;
+import web.model.User;
+import web.service.UserService;
 
-import java.util.ArrayList;
+import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class UsersController {
 
     @Autowired
-    private UserService userService; // = new UserDaoImpl();
+    UserService userService;
 
     public UsersController (){
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public String getUserInfo(@RequestParam("userName") String userName , ModelMap model) {
-        User user = userService.getUserByLogin(userName);
-//        User user = userService.getUser(1);
-        model.addAttribute("user", user);
+    public String getUserInfo(ModelMap model, Principal principal) {
+//        User user = userService.getUserByUserName(userName);
+//        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getUserByUserName(principal.getName()));
         return "userInfo";
     }
 
@@ -33,51 +36,52 @@ public class UsersController {
         return "login";
     }
 
-    @RequestMapping(value = "logOut", method = RequestMethod.GET)
-    public String logOut() {
-        return "redirect:/login";
-    }
-
     @GetMapping (value = "/admin")
     public String getAllUsers(Model model) {
         List<User> listUser = userService.getAllUsers();
         model.addAttribute("usersList", listUser);
+
         return "allUsers";
     }
 
     @GetMapping (value = "/")
     public String getStartView() {
         return "startView";
-
     }
 
-    @GetMapping (value = "addNewUser")
+    @GetMapping (value = "/admin/addNewUser")
     public String addNewUser(Model model){
-
         User user = new User();
-        model.addAttribute("user", user);
+        model.addAttribute("userParams", user);
 
         return "userAddingData";
     }
 
-    @GetMapping (value = "saveUser")
-    public String saveUser(@ModelAttribute("user") User user){
+    @GetMapping (value = "/admin/saveUser")
+    public String saveUser(@ModelAttribute("userParams") User user,
+                           @RequestParam(value = "rolesSet", required = false) String[] rolesSet ){
+        user.setEnabled(1);
+        Set<Role> roles = new HashSet<>();
+        for (String s : rolesSet){
+            roles.add(new Role(s));
+        }
+        user.setRoles(roles);
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping (value = "deleteUser")
+    @GetMapping (value = "/admin/deleteUser")
     public String deleteUser(@RequestParam("id") int id){
         userService.removeUserById(id);
         return "redirect:/admin";
     }
 
 
-    @GetMapping (value = "updateUser")
+    @GetMapping (value = "/admin/updateUser")
     public String updateUser(@RequestParam("id") int id, Model model){
 
-        User user = userService.getUser(id);
-        model.addAttribute("user", user);
+        User user = userService.getUserById(id);
+        model.addAttribute("userParams", user);
 
         return "userAddingData";
     }

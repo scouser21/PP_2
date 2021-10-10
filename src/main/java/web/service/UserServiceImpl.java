@@ -1,14 +1,11 @@
-package service;
+package web.service;
 
-import dao.UserDao;
-import model.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import web.dao.UserDao;
+import web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,13 +34,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public User getUser(int id) {
-        return userDao.getUser(id);
+    public User getUserByUserName(String userName) {
+        return userDao.getUserByUserName(userName);
     }
 
     @Override
     @Transactional
-    public User getUserByLogin(String login) {
-        return userDao.getUserByLogin(login);
+    public User getUserById(int id) {
+        return userDao.getUserById(id);
     }
 }

@@ -1,8 +1,7 @@
 package web.config;
 
-import dao.UserDao;
-import dao.UserDaoImpl;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -13,8 +12,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import service.UserService;
-import service.UserServiceImpl;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -22,9 +19,10 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableWebMvc
+@ComponentScan(value = "web")
 public class PersistenceJPAConfig{
 
-    @Bean
+    /*@Bean
     public UserService getUserService() {
         return new UserServiceImpl();
     }
@@ -35,12 +33,17 @@ public class PersistenceJPAConfig{
     }
 
     @Bean
+    public UserDetailsServiceImpl getUserDetailsServiceImpl() {
+        return new UserDetailsServiceImpl();
+    }*/
+
+    @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(getDataSource());
 //        em.setPackagesToScan(new String[] { "java", "java/web", "java/service", "java/model", "java/dao" });
-        em.setPackagesToScan(new String[] { "model" });
+        em.setPackagesToScan(new String[] {"web.model"});
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

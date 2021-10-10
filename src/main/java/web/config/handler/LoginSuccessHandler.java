@@ -1,8 +1,7 @@
 package web.config.handler;
 
-import model.User;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
@@ -22,19 +18,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
+        Set<String> set = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
-        Collection<? extends GrantedAuthority> list = authentication.getAuthorities();
-        boolean flagAdmin = false;
-        Iterator itr = list.iterator();
-        while (itr.hasNext()){
-            if (itr.next().toString().equals("ROLE_ADMIN")){
-                flagAdmin = true;
-            }
-        }
-        if (flagAdmin){
+        if (set.contains("ROLE_ADMIN")){
             httpServletResponse.sendRedirect("/admin");
         } else {
-            httpServletResponse.sendRedirect("/user?userName=" + authentication.getName());
+            httpServletResponse.sendRedirect("/user");
         }
     }
 }

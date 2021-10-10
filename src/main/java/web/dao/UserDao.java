@@ -1,6 +1,6 @@
-package dao;
+package web.dao;
 
-import model.User;
+import web.model.User;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
-    User getUser(int id);
+    User getUserByUserName(String userName);
 
-    User getUserByLogin(String login);
+    User getUserById(int id);
 }
